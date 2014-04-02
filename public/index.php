@@ -4,9 +4,6 @@ try {
 
 
 
-
-
-
     /**
      * Read the configuration
      */
@@ -24,8 +21,9 @@ try {
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
 
- //Setup the database service
-    $di->set('db', function(){
+    
+    //Setup the database service
+    $di->set('db', function() use ($config) {
         return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
             "host" => $config->database->host,
             "username" => $config->database->username,
@@ -50,13 +48,10 @@ try {
 
 
     //Retrieves all robots
-    $app->get('/api/robots', function() use ($app) {
-
-        echo "hello world";
-        exit;
+    $app->get('/pages', function() use ($app) {
 
         $data = array();
-        foreach (Robots::find() as $product) {
+        foreach (Pages::find() as $product) {
             $data["data"][] = $product;
         }
         $data["status"] = true;
@@ -66,7 +61,7 @@ try {
             "Plus another error"
         );
 
-        return $data;
+        echo json_encode($data);
     });
 
 
