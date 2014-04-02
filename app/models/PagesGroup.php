@@ -9,6 +9,10 @@ class PagesGroup extends \Phalcon\Mvc\Model
 	protected $modified;
 
  	public function initialize() {
+
+ 		$this->hasMany("id", "Pages", "pages_group_id");
+
+
         //Skips fields/columns on both INSERT/UPDATE operations
         $this->skipAttributes(array('created'));
 

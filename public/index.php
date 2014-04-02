@@ -87,7 +87,40 @@ try {
 
 
 
-    
+
+    $app->post("/pages", function() use ($app){
+
+        $payload = array();
+
+        //TODO - Sanitise?
+        $details = array(
+            "name" =>  $app->request->getPost('name', array('striptags', 'string')),
+            "url" =>  $app->request->getPost('url', array('striptags', 'string')),
+            "pages_group_id" => $app->request->getPost('pages_group_id', array('int', 'string')),
+        );
+
+        //$contact->created_at = new Phalcon\Db\RawValue('now()');
+
+        $page = new Pages();
+
+        if ( $page->save($details) == false) {
+            $payload["status"] = false;
+            foreach ($page->getMessages() as $message) {
+                $payload["messages"][] = array(
+                    "message" => $message->getMessage(),
+                    "field" => $message->getField(),
+                    "type" => $message->getType()
+                );                
+            }            
+        } else {
+            $payload["id"] = $page->getId();
+            $payload["status"] = true;
+        }
+
+        echo json_encode($payload);
+    });
+
+
 
     $app->post("/pages-group", function() use ($app){
 
@@ -117,12 +150,10 @@ try {
         }
 
         echo json_encode($payload);
-
     });
 
     //Put is update
     //Delete is delete
-
 
 
 
