@@ -64,9 +64,56 @@ try {
         echo json_encode($data);
     });
 
+    $app->get('/pages-group', function() use ($app) {
+
+        $data = array();
+        foreach (PagesGroup::find() as $product) {
+
+            $data["data"][] = array(
+                "id" => $product->getId(),
+                "name" => $product->getName()
+            );
+
+        }
+        $data["status"] = true;
+        $data["msg"] = array(
+            "There has been an error",
+            "Another error should go here",
+            "Plus another error"
+        );
+
+        echo json_encode($data);
+    });
+
+    $app->post("/pages-group", function() use ($app){
 
 
+        //TODO - Sanitise?
+        $details = array(
+            "name" =>  $app->request->getPost('name', array('striptags', 'string'))
+        );
 
+        //$contact->created_at = new Phalcon\Db\RawValue('now()');
+
+        $group = new PagesGroup();
+
+        if ( $group->save($details) == false) {
+            foreach ($group->getMessages() as $message) {
+                echo "Message: ", $message->getMessage();
+                echo "Field: ", $message->getField();
+                echo "Type: ", $message->getType();
+            }            
+        } else {            
+            echo json_encode(array("id",$group->getId()));
+        }
+
+
+        
+
+    });
+
+    //Put is update
+    //Delete is delete
 
 
 
