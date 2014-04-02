@@ -96,7 +96,7 @@ try {
         $details = array(
             "name" =>  $app->request->getPost('name', array('striptags', 'string')),
             "url" =>  $app->request->getPost('url', array('striptags', 'string')),
-            "pages_group_id" => $app->request->getPost('pages_group_id', array('int', 'string')),
+            "pages_group_id" => $app->request->getPost('pages_group_id', array('int')),
         );
 
         //$contact->created_at = new Phalcon\Db\RawValue('now()');
@@ -130,8 +130,6 @@ try {
         $details = array(
             "name" =>  $app->request->getPost('name', array('striptags', 'string'))
         );
-
-        //$contact->created_at = new Phalcon\Db\RawValue('now()');
 
         $group = new PagesGroup();
 

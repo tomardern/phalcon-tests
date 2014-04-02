@@ -30,6 +30,24 @@ class PagesGroup extends \Phalcon\Mvc\Model
 		return $this->name;
 	}
 
+
+	//This can be done here too
+	public function beforeSave() {
+        
+        if (strlen($name) < 10) {
+            throw new \InvalidArgumentException('The name is too short beforeSave()');
+        }
+
+
+    }
+
+	public function beforeUpdate() {
+        //Set the modification date
+        $this->modified = new Phalcon\Db\RawValue('now()');
+    }
+
+
+
 	public function setName($name){
 		if (strlen($name) < 10) {
             throw new \InvalidArgumentException('The name is too short');
