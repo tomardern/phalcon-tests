@@ -85,8 +85,13 @@ try {
         echo json_encode($data);
     });
 
+
+
+    
+
     $app->post("/pages-group", function() use ($app){
 
+        $payload = array();
 
         //TODO - Sanitise?
         $details = array(
@@ -98,17 +103,20 @@ try {
         $group = new PagesGroup();
 
         if ( $group->save($details) == false) {
+            $payload["status"] = false;
             foreach ($group->getMessages() as $message) {
-                echo "Message: ", $message->getMessage();
-                echo "Field: ", $message->getField();
-                echo "Type: ", $message->getType();
+                $payload["messages"][] = array(
+                    "message" => $message->getMessage(),
+                    "field" => $message->getField(),
+                    "type" => $message->getType()
+                );                
             }            
-        } else {            
-            echo json_encode(array("id",$group->getId()));
+        } else {
+            $payload["id"] = $group->getId();
+            $payload["status"] = true;
         }
 
-
-        
+        echo json_encode($payload);
 
     });
 

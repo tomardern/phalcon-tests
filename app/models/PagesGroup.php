@@ -6,7 +6,7 @@ class PagesGroup extends \Phalcon\Mvc\Model
 	protected $id;
 	protected $name;
 	protected $created; //Used by MySQL
-
+	protected $modified;
 
  	public function initialize() {
         //Skips fields/columns on both INSERT/UPDATE operations
@@ -34,7 +34,9 @@ class PagesGroup extends \Phalcon\Mvc\Model
 	}
 
 
-
+	public function setModified(){
+		$this->modified = new Phalcon\Db\RawValue('now()');
+	}
 
 
 }
