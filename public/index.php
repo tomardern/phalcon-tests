@@ -76,6 +76,13 @@ try {
 
 
 
+
+
+    $app->notFound(function () use ($app) {
+        $app->response->setStatusCode(404, "Not Found")->sendHeaders();
+        echo "404 - Not Found";
+    });
+
      $app->mount($pages);
 
      $app->handle();
