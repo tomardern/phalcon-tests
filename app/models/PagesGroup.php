@@ -35,7 +35,7 @@ class PagesGroup extends \Phalcon\Mvc\Model
 	public function beforeSave() {
         
         if (strlen($name) < 10) {
-            throw new \InvalidArgumentException('The name is too short beforeSave()');
+            //throw new \InvalidArgumentException('The name is too short beforeSave()');
         }
 
 

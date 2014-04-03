@@ -1,7 +1,6 @@
 <?php
 
-class PagesController extends \Phalcon\Mvc\Controller
-{
+class PagesController extends \Phalcon\Mvc\Controller {
 
     public function indexAction() {
 

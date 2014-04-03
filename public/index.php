@@ -75,8 +75,20 @@ try {
     $pages->put('/{id}','editAction');
     $pages->get('/missing','missingAction');
     
+    $app->mount($pages);
 
+    /* -------------------------------------------------
+    Pages Group Router Collection
+    ---------------------------------------------------*/
+    $pagesGroup = new Phalcon\Mvc\Micro\Collection();
+    $pagesGroup->setHandler('PagesGroupController',true);
+    $pagesGroup->setPrefix('/pages-group');
 
+    //Define out routes
+    $pagesGroup->get('/','indexAction');
+    $pagesGroup->post('/','createAction');
+
+    $app->mount($pagesGroup);
 
 
 
@@ -85,76 +97,11 @@ try {
         echo "404 - Not Found";
     });
 
-     $app->mount($pages);
-
-     $app->handle();
-
-
-
-     exit;
-
-
-    $app->get('/pages-group', function() use ($app) {
-
-        $data = array();
-        foreach (PagesGroup::find() as $product) {
-
-            $data["data"][] = array(
-                "id" => $product->getId(),
-                "name" => $product->getName()
-            );
-
-        }
-        $data["status"] = true;
-        $data["msg"] = array(
-            "There has been an error",
-            "Another error should go here",
-            "Plus another error"
-        );
-
-        echo json_encode($data);
-    });
-
-
-
-
-
-
-    $app->post("/pages-group", function() use ($app){
-
-        $payload = array();
-
-        //TODO - Sanitise?
-        $details = array(
-            "name" =>  $app->request->getPost('name', array('striptags', 'string'))
-        );
-
-        $group = new PagesGroup();
-
-        if ( $group->save($details) == false) {
-            $payload["status"] = false;
-            foreach ($group->getMessages() as $message) {
-                $payload["messages"][] = array(
-                    "message" => $message->getMessage(),
-                    "field" => $message->getField(),
-                    "type" => $message->getType()
-                );                
-            }            
-        } else {
-            $payload["id"] = $group->getId();
-            $payload["status"] = true;
-        }
-
-        echo json_encode($payload);
-    });
-
-    //Put is update
-    //Delete is delete
-
-
+    
 
     $app->handle();
 
+    exit;
 
     
 
