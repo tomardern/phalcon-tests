@@ -24,8 +24,6 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 
 		$group = PagesGroup::findFirst($id);
 
-		$group->setModified();
-
 		if ( $group->save($details) == false) {
 			return $this->response->sendError(501,$group->getMessages());		            			
 		}

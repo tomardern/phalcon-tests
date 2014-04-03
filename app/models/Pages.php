@@ -1,14 +1,19 @@
 <?php
 
-class Pages extends \Phalcon\Mvc\Model
-{
+class Pages extends \Phalcon\Mvc\Model {
 
-
+    //Properties
 	protected $id;
 	protected $mmc_id;
     protected $created;
     protected $modified;
 
+
+    public function beforeUpdate() {
+        $this->modified = new Phalcon\Db\RawValue('now()');
+    }
+
+    //Methods
  	public function initialize() {
 
  		$this->belongsTo("pages_group_id", "PagesGroup", "id", array(
@@ -28,9 +33,6 @@ class Pages extends \Phalcon\Mvc\Model
 		return $this->id;
 	}
 
-    public function setModified(){
-        $this->modified = new Phalcon\Db\RawValue('now()');
-    }
 
 
 

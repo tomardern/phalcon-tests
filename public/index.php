@@ -63,6 +63,7 @@ try {
     $pages = new Phalcon\Mvc\Micro\Collection();
 
     //Define our routes
+    $pages->setPrefix("/pages");
     $pages->get('/', 'indexAction');
     $pages->post('/','createAction');
     $pages->get('/{id}','viewAction');
@@ -70,9 +71,9 @@ try {
     $pages->get('/missing','missingAction');
 
     //Set up our handler
-    $pages->setHandler('PagesController', true); //This is LazyLoaded
-    $pages->setPrefix("/pages");    
+    $pages->setHandler('PagesController', true); //This is LazyLoaded    
     $app->mount($pages);
+
 
     /* -------------------------------------------------
     Pages Group Router Collection
@@ -80,13 +81,13 @@ try {
     $pagesGroup = new Phalcon\Mvc\Micro\Collection();
 
     //Define out routes
+    $pagesGroup->setPrefix('/pages-group');
     $pagesGroup->get('/','indexAction');
     $pagesGroup->post('/','createAction');
     $pagesGroup->put('/{id}','editAction');
 
     //Set up our handler
-    $pagesGroup->setHandler('PagesGroupController',true);
-    $pagesGroup->setPrefix('/pages-group');
+    $pagesGroup->setHandler('PagesGroupController',true);    
     $app->mount($pagesGroup);
 
 

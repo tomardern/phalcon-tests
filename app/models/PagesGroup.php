@@ -1,13 +1,14 @@
 <?php
 
-class PagesGroup extends \Phalcon\Mvc\Model
-{
+class PagesGroup extends \Phalcon\Mvc\Model {
 
+	//Properties
 	protected $id;
 	protected $name;
 	protected $created; //Used by MySQL
 	protected $modified;
 
+	//Methods
  	public function initialize() {
 
  		$this->hasMany("id", "Pages", "pages_group_id");
@@ -19,6 +20,10 @@ class PagesGroup extends \Phalcon\Mvc\Model
         //Skips only when inserting
         $this->skipAttributesOnCreate(array('modified'));
 
+    }
+
+    public function beforeUpdate() {
+        $this->modified = new Phalcon\Db\RawValue('now()');
     }
 
 
@@ -41,23 +46,12 @@ class PagesGroup extends \Phalcon\Mvc\Model
 
     }
 
-	public function beforeUpdate() {
-        //Set the modification date
-        $this->modified = new Phalcon\Db\RawValue('now()');
-    }
-
-
-
+	
 	public function setName($name){
 		if (strlen($name) < 10) {
             //throw new \InvalidArgumentException('The name is too short');
         }
         $this->name = $name;
-	}
-
-
-	public function setModified(){
-		$this->modified = new Phalcon\Db\RawValue('now()');
 	}
 
 
