@@ -16,7 +16,7 @@ Class cmsresponse extends Phalcon\Http\Response {
         }
 
         function appendMeta($key,$data){
-            $this->payload["meta"][$key] = $data;]
+            $this->payload["meta"][$key] = $data;
         }
 
 

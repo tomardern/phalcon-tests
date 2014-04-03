@@ -82,6 +82,7 @@ try {
     //Define out routes
     $pagesGroup->get('/','indexAction');
     $pagesGroup->post('/','createAction');
+    $pagesGroup->put('/{id}','editAction');
 
     //Set up our handler
     $pagesGroup->setHandler('PagesGroupController',true);

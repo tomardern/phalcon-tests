@@ -50,7 +50,7 @@ class PagesGroup extends \Phalcon\Mvc\Model
 
 	public function setName($name){
 		if (strlen($name) < 10) {
-            throw new \InvalidArgumentException('The name is too short');
+            //throw new \InvalidArgumentException('The name is too short');
         }
         $this->name = $name;
 	}

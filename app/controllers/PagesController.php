@@ -22,6 +22,9 @@ class PagesController extends \Phalcon\Mvc\Controller {
             "pages_group_id" => $this->request->getPut('pages_group_id', array('int')),
         );
 
+        $page->setModified();
+
+
 		if ( $page->save($details) == false) {  
             $messages = array();          
             foreach ($page->getMessages() as $message) {

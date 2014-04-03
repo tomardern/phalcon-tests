@@ -16,6 +16,32 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 		return $this->response->send(200,"groups",$groups);
 	}
 
+	public function editAction($id){
+
+		$details = array(
+			"name" =>  $this->request->getPut('name', array('striptags', 'string'))
+		);
+
+		$group = PagesGroup::findFirst($id);
+
+		$group->setModified();
+
+		if ( $group->save($details) == false) {
+			$messages = array();
+			foreach ($group->getMessages() as $message) {
+				$messages[] = array(
+					"message" => $message->getMessage(),
+					"field" => $message->getField(),
+					"type" => $message->getType()
+				);                
+			}
+			return $this->response->sendError(501,$messages);            			
+		}
+
+		return $this->response->send(200,"id",$group->getId());
+	}
+
+
 	public function createAction(){
 
 		$details = array(

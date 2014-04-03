@@ -28,6 +28,9 @@ class Pages extends \Phalcon\Mvc\Model
 		return $this->id;
 	}
 
+    public function setModified(){
+        $this->modified = new Phalcon\Db\RawValue('now()');
+    }
 
 
 
