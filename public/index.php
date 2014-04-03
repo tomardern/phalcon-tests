@@ -35,38 +35,24 @@ try {
     });
 
 
-
     //Setup a base URI so that all generated URIs
+    /*
     $di->set('url', function(){
         $url = new \Phalcon\Mvc\Url();
         $url->setBaseUri('/cms-api/');
         return $url;
     });
-
-
+    */
+    
     $app = new \Phalcon\Mvc\Micro($di);
 
-    
-
-
-
-
-    /*
-
-    POST /v1/pages/
-    GET /v1/pages/14/messages
-    POST /v1/pages/15/
-    POST /v1/pages/15/activate
-
-    */
+ 
 
 
     /* -------------------------------------------------
     Pages Router Collection
     ---------------------------------------------------*/
     $pages = new Phalcon\Mvc\Micro\Collection();
-    $pages->setHandler('PagesController', true); //This is LazyLoaded
-    $pages->setPrefix("/pages");
 
     //Define our routes
     $pages->get('/', 'indexAction');
@@ -74,24 +60,32 @@ try {
     $pages->get('/{id}','viewAction');
     $pages->put('/{id}','editAction');
     $pages->get('/missing','missingAction');
-    
+
+    //Set up our handler
+    $pages->setHandler('PagesController', true); //This is LazyLoaded
+    $pages->setPrefix("/pages");    
     $app->mount($pages);
 
     /* -------------------------------------------------
     Pages Group Router Collection
     ---------------------------------------------------*/
     $pagesGroup = new Phalcon\Mvc\Micro\Collection();
-    $pagesGroup->setHandler('PagesGroupController',true);
-    $pagesGroup->setPrefix('/pages-group');
 
     //Define out routes
     $pagesGroup->get('/','indexAction');
     $pagesGroup->post('/','createAction');
 
+    //Set up our handler
+    $pagesGroup->setHandler('PagesGroupController',true);
+    $pagesGroup->setPrefix('/pages-group');
     $app->mount($pagesGroup);
 
 
 
+
+    /* -------------------------------------------------
+    Not Found/Default route
+    ---------------------------------------------------*/
     $app->notFound(function () use ($app) {
         $app->response->setStatusCode(404, "Not Found")->sendHeaders();
         echo "404 - Not Found";
