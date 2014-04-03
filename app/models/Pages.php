@@ -6,7 +6,8 @@ class Pages extends \Phalcon\Mvc\Model
 
 	protected $id;
 	protected $mmc_id;
-
+    protected $created;
+    protected $modified;
 
  	public function initialize() {
 

@@ -19,6 +19,16 @@ class PagesController extends \Phalcon\Mvc\Controller
         echo json_encode($data);
     }
 
+    public function viewAction($id){
+
+    	$payload = array();
+    	$page = Pages::findFirst($id);
+
+    	$payload["page"] = $page;
+
+		echo json_encode($page);
+    }
+
 
     public function missingAction(){
     	$this->response->setStatusCode(404, "Not Found");
