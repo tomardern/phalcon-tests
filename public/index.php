@@ -3,9 +3,6 @@
 try {
 
 
-
-
-
     /**
      * Read the configuration
      */
@@ -20,8 +17,25 @@ try {
         '../app/models/'
     ))->register();
 
+
+
+    Class p8response extends Phalcon\Http\Response {
+        function helloworld(){
+            echo "Hello world";
+
+
+        }
+    }
+
+
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
+
+
+    $di->set('response', function() use ($config) {
+        return new p8response();
+    });
+
 
     
     //Setup the database service
@@ -45,6 +59,8 @@ try {
     */
     
     $app = new \Phalcon\Mvc\Micro($di);
+
+
 
  
 
@@ -88,6 +104,9 @@ try {
     ---------------------------------------------------*/
     $app->notFound(function () use ($app) {
         $app->response->setStatusCode(404, "Not Found")->sendHeaders();
+
+        $app->response->helloworld();
+
         echo "404 - Not Found";
     });
 
