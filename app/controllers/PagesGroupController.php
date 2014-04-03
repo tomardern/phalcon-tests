@@ -5,51 +5,38 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 
 	function indexAction() {
 
-		$data = array();
+		$groups = array();
 		foreach (PagesGroup::find() as $product) {
-			$data["data"][] = array(
+			$groups[] = array(
 				"id" => $product->getId(),
 				"name" => $product->getName()
 			);
 		}
 
-		$data["status"] = true;
-		$data["msg"] = array(
-			"There has been an error",
-			"Another error should go here",
-			"Plus another error"
-		);
-
-		echo json_encode($data);
+		return $this->response->send(200,"groups",$groups);
 	}
 
 	public function createAction(){
 
-		$payload = array();
-
-		//TODO - Sanitise?
 		$details = array(
 			"name" =>  $this->request->getPost('name', array('striptags', 'string'))
 		);
 
-
 		$group = new PagesGroup();
 
 		if ( $group->save($details) == false) {
-			$payload["status"] = false;
+			$messages = array();
 			foreach ($group->getMessages() as $message) {
-				$payload["messages"][] = array(
+				$messages[] = array(
 					"message" => $message->getMessage(),
 					"field" => $message->getField(),
 					"type" => $message->getType()
 				);                
 			}            
-		} else {
-			$payload["id"] = $group->getId();
-			$payload["status"] = true;
+			return $this->response->send(501,"errors",$messages);		
 		}
 
-		echo json_encode($payload);
+		return $this->response->send(200,"id",$group->getId());
 	}
 
 }   

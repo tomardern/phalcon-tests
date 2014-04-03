@@ -19,23 +19,15 @@ try {
 
 
 
-    Class p8response extends Phalcon\Http\Response {
-        function helloworld(){
-            echo "Hello world";
-
-
-        }
-    }
-
 
     //Create a DI
     $di = new Phalcon\DI\FactoryDefault();
 
 
     $di->set('response', function() use ($config) {
-        return new p8response();
+        require "../app/services/cmsresponse.php";
+        return new cmsresponse();
     });
-
 
     
     //Setup the database service
@@ -103,11 +95,7 @@ try {
     Not Found/Default route
     ---------------------------------------------------*/
     $app->notFound(function () use ($app) {
-        $app->response->setStatusCode(404, "Not Found")->sendHeaders();
-
-        $app->response->helloworld();
-
-        echo "404 - Not Found";
+        return $app->response->send(404);
     });
 
     

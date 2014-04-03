@@ -6,16 +6,10 @@ class PagesController extends \Phalcon\Mvc\Controller {
 
     	$data = array();
         foreach (Pages::find() as $product) {
-            $data["data"][] = $product;
+            $data[] = $product;
         }
-        $data["status"] = true;
-        $data["msg"] = array(
-            "There has been an error",
-            "Another error should go here",
-            "Plus another error"
-        );
 
-        echo json_encode($data);
+        return $this->response->send(200,"pages",$data);
     }
 
     public function editAction($id){
@@ -28,42 +22,29 @@ class PagesController extends \Phalcon\Mvc\Controller {
             "pages_group_id" => $this->request->getPut('pages_group_id', array('int')),
         );
 
-		if ( $page->save($details) == false) {
-            $payload["status"] = false;
+		if ( $page->save($details) == false) {  
+            $messages = array();          
             foreach ($page->getMessages() as $message) {
-                $payload["messages"][] = array(
+                $messages[] = array(
                     "message" => $message->getMessage(),
                     "field" => $message->getField(),
                     "type" => $message->getType()
                 );                
-            }            
-        } else {
-            $payload["id"] = $page->getId();
-            $payload["status"] = true;
+            }
+            return $this->response->send(501,"errors",$messages);    
         }
 
-        echo json_encode($payload);
+
+        return $this->response->send(200,"id",$page->getId());
     }
 
     public function viewAction($id){
-
-    	$payload = array();
     	$page = Pages::findFirst($id);
-
-    	$payload["page"] = $page;
-
-		echo json_encode($page);
-    }
-
-
-    public function missingAction(){
-    	$this->response->setStatusCode(404, "Not Found");
-    	echo "hello world";
+    	return $this->response->send(200,"page",$page);
     }
 
 
     public function createAction(){
-    	$payload = array();
 
         $details = array(
             "name" =>  $this->request->getPost('name', array('striptags', 'string')),
@@ -74,26 +55,19 @@ class PagesController extends \Phalcon\Mvc\Controller {
         $page = new Pages();
 
         if ( $page->save($details) == false) {
-            $payload["status"] = false;
             foreach ($page->getMessages() as $message) {
                 $payload["messages"][] = array(
                     "message" => $message->getMessage(),
                     "field" => $message->getField(),
                     "type" => $message->getType()
                 );                
-            }            
-        } else {
-            $payload["id"] = $page->getId();
-            $payload["status"] = true;
+            }
+            return $this->response->send(501,"errors",$messages);           
         }
 
-        echo json_encode($payload);
+        return $this->response->send(200,"id",$page->getId());
     }
 
 
-
-    public function showAction() {
-    	echo "hello world";
-    }
 
 }
