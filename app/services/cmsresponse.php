@@ -3,11 +3,30 @@
 //This adds abstract functionality to the current response
 Class cmsresponse extends Phalcon\Http\Response {
 
-        private $payload = array();
+        private $payload = array(
+            "data" => array(),
+            "meta" => array()
+            //Payload could have pagination
+        );
 
+        
 
         function appendPayload($key,$data){
             $this->payload["data"][$key] = $data;
+        }
+
+        function appendMeta($key,$data){
+            $this->payload["meta"][$key] = $data;]
+        }
+
+
+        function sendError($status = 501, $messages){
+
+            if ($messages){
+                $this->appendMeta("messages",$messages);                
+            }
+
+            $this->send($status);
         }
 
         function send($status = 200,$key = null,$data = null){
@@ -18,7 +37,7 @@ Class cmsresponse extends Phalcon\Http\Response {
             }
 
             //Set status code
-            $this->payload["status"] = $status;
+            $this->payload["meta"]["status"] = $status;
             $this->setStatusCode($code,$msg);
             
             //Append data if has been passed

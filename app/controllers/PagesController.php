@@ -9,7 +9,7 @@ class PagesController extends \Phalcon\Mvc\Controller {
             $data[] = $product;
         }
 
-        $this->response->send(200,"pages",$data);
+       return  $this->response->send(200,"pages",$data);
     }
 
     public function editAction($id){
@@ -31,16 +31,16 @@ class PagesController extends \Phalcon\Mvc\Controller {
                     "type" => $message->getType()
                 );                
             }
-            $this->response->send(501,"errors",$messages);    
+            return $this->response->sendError(501,$messages);     
         }
 
 
-        $this->response->send(200,"id",$page->getId());
+        return $this->response->send(200,"id",$page->getId());
     }
 
     public function viewAction($id){
     	$page = Pages::findFirst($id);
-    	$this->response->send(200,"page",$page);
+    	return $this->response->send(200,"page",$page);
     }
 
 
@@ -62,10 +62,10 @@ class PagesController extends \Phalcon\Mvc\Controller {
                     "type" => $message->getType()
                 );                
             }
-            $this->response->send(501,"errors",$messages);           
+            return $this->response->sendError(501,$messages);              
         }
 
-        $this->response->send(200,"id",$page->getId());
+        return $this->response->send(200,"id",$page->getId());
     }
 
 

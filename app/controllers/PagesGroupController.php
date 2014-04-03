@@ -13,7 +13,7 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 			);
 		}
 
-		$this->response->send(200,"groups",$groups);
+		return $this->response->send(200,"groups",$groups);
 	}
 
 	public function createAction(){
@@ -32,11 +32,11 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 					"field" => $message->getField(),
 					"type" => $message->getType()
 				);                
-			}            
-			$this->response->send(501,"errors",$messages);		
+			}
+			return $this->response->sendError(501,$messages);            			
 		}
 
-		$this->response->send(200,"id",$group->getId());
+		return $this->response->send(200,"id",$group->getId());
 	}
 
 }   
