@@ -4,6 +4,8 @@ try {
 
 
 
+
+
     /**
      * Read the configuration
      */
@@ -47,22 +49,41 @@ try {
     
 
 
-    //Retrieves all robots
-    $app->get('/pages', function() use ($app) {
 
-        $data = array();
-        foreach (Pages::find() as $product) {
-            $data["data"][] = $product;
-        }
-        $data["status"] = true;
-        $data["msg"] = array(
-            "There has been an error",
-            "Another error should go here",
-            "Plus another error"
-        );
 
-        echo json_encode($data);
-    });
+    /*
+
+    POST /v1/pages/
+    GET /v1/pages/14/messages
+    POST /v1/pages/15/
+    POST /v1/pages/15/activate
+
+    */
+
+
+    /* -------------------------------------------------
+    Pages Router Collection
+    ---------------------------------------------------*/
+    $pages = new Phalcon\Mvc\Micro\Collection();
+    $pages->setHandler('PagesController', true); //This is LazyLoaded
+    $pages->setPrefix("/pages");
+
+    //Define our routes
+    $pages->get('/', 'indexAction');
+    $pages->post('/','createAction');
+
+
+
+
+
+     $app->mount($pages);
+
+     $app->handle();
+
+
+
+     exit;
+
 
     $app->get('/pages-group', function() use ($app) {
 
@@ -87,38 +108,6 @@ try {
 
 
 
-
-    $app->post("/pages", function() use ($app){
-
-        $payload = array();
-
-        //TODO - Sanitise?
-        $details = array(
-            "name" =>  $app->request->getPost('name', array('striptags', 'string')),
-            "url" =>  $app->request->getPost('url', array('striptags', 'string')),
-            "pages_group_id" => $app->request->getPost('pages_group_id', array('int')),
-        );
-
-        //$contact->created_at = new Phalcon\Db\RawValue('now()');
-
-        $page = new Pages();
-
-        if ( $page->save($details) == false) {
-            $payload["status"] = false;
-            foreach ($page->getMessages() as $message) {
-                $payload["messages"][] = array(
-                    "message" => $message->getMessage(),
-                    "field" => $message->getField(),
-                    "type" => $message->getType()
-                );                
-            }            
-        } else {
-            $payload["id"] = $page->getId();
-            $payload["status"] = true;
-        }
-
-        echo json_encode($payload);
-    });
 
 
 
