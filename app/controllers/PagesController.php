@@ -19,6 +19,33 @@ class PagesController extends \Phalcon\Mvc\Controller
         echo json_encode($data);
     }
 
+    public function editAction($id){
+
+    	$page = Pages::findFirst($id);
+
+    	$details = array(
+            "name" =>  $this->request->getPut('name'),
+            "url" =>  $this->request->getPut('url', array('striptags', 'string')),
+            "pages_group_id" => $this->request->getPut('pages_group_id', array('int')),
+        );
+
+		if ( $page->save($details) == false) {
+            $payload["status"] = false;
+            foreach ($page->getMessages() as $message) {
+                $payload["messages"][] = array(
+                    "message" => $message->getMessage(),
+                    "field" => $message->getField(),
+                    "type" => $message->getType()
+                );                
+            }            
+        } else {
+            $payload["id"] = $page->getId();
+            $payload["status"] = true;
+        }
+
+        echo json_encode($payload);
+    }
+
     public function viewAction($id){
 
     	$payload = array();

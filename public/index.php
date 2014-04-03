@@ -72,6 +72,7 @@ try {
     $pages->get('/', 'indexAction');
     $pages->post('/','createAction');
     $pages->get('/{id}','viewAction');
+    $pages->put('/{id}','editAction');
     $pages->get('/missing','missingAction');
     
 
