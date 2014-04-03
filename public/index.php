@@ -71,7 +71,7 @@ try {
     //Define our routes
     $pages->get('/', 'indexAction');
     $pages->post('/','createAction');
-
+    $pages->get('/missing','missingAction');
 
 
 

@@ -20,6 +20,12 @@ class PagesController extends \Phalcon\Mvc\Controller
     }
 
 
+    public function missingAction(){
+    	$this->response->setStatusCode(404, "Not Found");
+    	echo "hello world";
+    }
+
+
     public function createAction(){
     	$payload = array();
 
