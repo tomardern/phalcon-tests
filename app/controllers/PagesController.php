@@ -26,15 +26,7 @@ class PagesController extends \Phalcon\Mvc\Controller {
 
 
 		if ( $page->save($details) == false) {  
-            $messages = array();          
-            foreach ($page->getMessages() as $message) {
-                $messages[] = array(
-                    "message" => $message->getMessage(),
-                    "field" => $message->getField(),
-                    "type" => $message->getType()
-                );                
-            }
-            return $this->response->sendError(501,$messages);     
+            return $this->response->sendError(501,$page->getMessages());    
         }
 
 
@@ -58,14 +50,7 @@ class PagesController extends \Phalcon\Mvc\Controller {
         $page = new Pages();
 
         if ( $page->save($details) == false) {
-            foreach ($page->getMessages() as $message) {
-                $payload["messages"][] = array(
-                    "message" => $message->getMessage(),
-                    "field" => $message->getField(),
-                    "type" => $message->getType()
-                );                
-            }
-            return $this->response->sendError(501,$messages);              
+            return $this->response->sendError(501,$page->getMessages());            
         }
 
         return $this->response->send(200,"id",$page->getId());

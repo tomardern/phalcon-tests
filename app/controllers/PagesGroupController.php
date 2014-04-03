@@ -27,15 +27,7 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 		$group->setModified();
 
 		if ( $group->save($details) == false) {
-			$messages = array();
-			foreach ($group->getMessages() as $message) {
-				$messages[] = array(
-					"message" => $message->getMessage(),
-					"field" => $message->getField(),
-					"type" => $message->getType()
-				);                
-			}
-			return $this->response->sendError(501,$messages);            			
+			return $this->response->sendError(501,$group->getMessages());		            			
 		}
 
 		return $this->response->send(200,"id",$group->getId());
@@ -51,15 +43,7 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 		$group = new PagesGroup();
 
 		if ( $group->save($details) == false) {
-			$messages = array();
-			foreach ($group->getMessages() as $message) {
-				$messages[] = array(
-					"message" => $message->getMessage(),
-					"field" => $message->getField(),
-					"type" => $message->getType()
-				);                
-			}
-			return $this->response->sendError(501,$messages);            			
+			return $this->response->sendError(501,$group->getMessages());	            			
 		}
 
 		return $this->response->send(200,"id",$group->getId());

@@ -22,9 +22,20 @@ Class cmsresponse extends Phalcon\Http\Response {
 
         function sendError($status = 501, $messages){
 
-            if ($messages){
-                $this->appendMeta("messages",$messages);                
+            if (is_array($messages)){
+                $msg = array();
+                 foreach ($messages as $message) {
+                    $msg[] = array(
+                        "message" => $message->getMessage(),
+                        "field" => $message->getField(),
+                        "type" => $message->getType()
+                    );                
+                }
+            } else {
+                $msg = $messages;
             }
+
+            $this->appendMeta("messages",$msg);             
 
             $this->send($status);
         }
