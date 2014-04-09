@@ -100,8 +100,7 @@ try {
         return $app->response->send(404);
     });
 
-    
-
+  
     $app->handle();
 
     exit;
@@ -111,5 +110,5 @@ try {
     //echo $application->handle()->getContent();
 
 } catch(\Phalcon\Exception $e) {
-     echo "PhalconException: ", $e->getMessage();
+    return $app->response->sendError(501,$e->getMessage());   
 }

@@ -13,6 +13,8 @@ class PagesGroupController extends \Phalcon\Mvc\Controller {
 			);
 		}
 
+
+
 		return $this->response->send(200,"groups",$groups);
 	}
 
